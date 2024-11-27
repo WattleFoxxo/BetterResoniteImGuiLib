@@ -50,7 +50,7 @@ public class ImGuiExample : ResoniteMod {
 ```
 
 ## Using HotReloadLib
-This exmple uses the HotReloadLib to unregister the old UI handler and register the new UI handler on hot reload.
+This example uses the HotReloadLib to unregister the old UI handler and register the new UI handler on hot reload.
 ```cs
 using HarmonyLib;
 using ResoniteModLoader;
@@ -96,6 +96,7 @@ public class ImGuiExample : ResoniteMod {
 ```
 
 ## Capturing Input
+This example sets up a Task to listen to the right shift key to toggle input capture on UIs.
 ```cs
 using HarmonyLib;
 using ResoniteModLoader;
@@ -117,7 +118,7 @@ public class ImGuiExample : ResoniteMod {
 
     public override void OnEngineInit() {
         Task.Run(() => CheckKeyState(cancellationToken.Token), cancellationToken.Token);
-        Engine.Current.OnShutdownRequest += (r) => {
+        Engine.Current.OnShutdownRequest += (r) => { //End Task on FrooxEngine shut down 
             cancellationToken.Cancel();
         };
 
