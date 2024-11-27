@@ -7,7 +7,7 @@
 
 # Installation
  - Make sure you have [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) Installed.
- - Download BetterResoniteImGuiLib.dll and put it in `rml_mods`
+ - Download [BetterResoniteImGuiLib](https://github.com/WattleFoxxo/BetterResoniteImGuiLib/releases/latest/download/BetterResoniteImGuiLib.dll) and put it in `rml_mods`
  - Download [ImGuiUnityInject](https://github.com/art0007i/ImGuiUnityInject/releases/latest/download/ImGuiUnityInject.dll) and put it in `rml_libs`
  - Download [cimgui-freetype.dll](https://github.com/WattleFoxxo/ImGuiUnityInject/raw/refs/heads/master/Plugins/cimgui-freetype.dll) and [cimgui.dll](https://github.com/WattleFoxxo/ImGuiUnityInject/raw/refs/heads/master/Plugins/cimgui.dll) then put them into `Resonite_Data/Plugins/x86_64`
 
