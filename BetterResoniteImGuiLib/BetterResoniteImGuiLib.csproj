@@ -2,7 +2,7 @@
 
     <PropertyGroup>       
         <RootNamespace>BetterResoniteImGuiLib</RootNamespace>
-		<AssemblyName>0BetterResoniteImGuiLib</AssemblyName>
+		<AssemblyName>BetterResoniteImGuiLib</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<TargetFramework>net472</TargetFramework>
 		<FileAlignment>512</FileAlignment>

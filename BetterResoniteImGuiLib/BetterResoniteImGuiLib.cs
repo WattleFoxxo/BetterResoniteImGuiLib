@@ -17,8 +17,8 @@ public class BetterResoniteImGuiLib : ResoniteMod {
     public override string Version => "0.1.0";
     public override string Link => "https://www.wattlefoxxo.au/BetterResoniteGuiLib";
 	
-    public static Action uiHandler;
-	public static bool showUi = false;
+    public static event Action uiHandler;
+	public static bool captureInput = false;
 
     public override void OnEngineInit() {
         Harmony harmony = new Harmony("au.wattlefoxxo.BetterResoniteGuiLib");
@@ -26,10 +26,15 @@ public class BetterResoniteImGuiLib : ResoniteMod {
 		
 		ImGuiReady onReady = null;
 		ImGuiInstance.GetOrCreate((gui, isNew) => {
-			if (isNew) gui._camera = SceneManager.GetActiveScene().GetRootGameObjects().Where(go => go.name == "FrooxEngine").First().GetComponent<FrooxEngineRunner>().OverlayCamera;
+			if (isNew) {
+				gui._camera = SceneManager.GetActiveScene().GetRootGameObjects().Where(go => go.name == "FrooxEngine").First().GetComponent<FrooxEngineRunner>().OverlayCamera;
+			}
 			
-			if (onReady != null) onReady(gui, isNew);
-			else gui.enabled = true;
+			if (onReady != null) {
+				onReady(gui, isNew);
+			} else {
+				gui.enabled = true;
+			}
 		}).Layout += () => {
 			uiHandler?.Invoke();
 		};
@@ -38,7 +43,7 @@ public class BetterResoniteImGuiLib : ResoniteMod {
     [HarmonyPatch(typeof(MouseDriver), "UpdateMouse")]
 	class CursorUpdatePatch {
 		public static bool Prefix(FrooxEngine.Mouse mouse) {
-			if (showUi) {
+			if (captureInput) {
 				mouse.LeftButton.UpdateState(false);
 				mouse.RightButton.UpdateState(false);
 				mouse.MiddleButton.UpdateState(false);
@@ -49,6 +54,7 @@ public class BetterResoniteImGuiLib : ResoniteMod {
 				mouse.NormalizedScrollWheelDelta.UpdateValue(float2.Zero, Time.deltaTime);
 				return false;
 			}
+
 			return true;
 		}
 	}
@@ -56,9 +62,10 @@ public class BetterResoniteImGuiLib : ResoniteMod {
     [HarmonyPatch(typeof(KeyboardDriver), "Current_onTextInput")]
 	class KeyboardDeltaPatch {
 		public static bool Prefix() {
-			if (showUi) {
+			if (captureInput) {
 				return false;
 			}
+
 			return true;
 		}
 	}
@@ -66,39 +73,30 @@ public class BetterResoniteImGuiLib : ResoniteMod {
 	[HarmonyPatch(typeof(KeyboardDriver), "GetKeyState")]
 	class KeyboardStatePatch {
 		public static bool Prefix(ref bool __result) {
-			if (showUi) {
+			if (captureInput) {
 				__result = false;
 				return false;
 			}
+
 			return true;
 		}
 	}
 }
 
 public static class ImGuiLib {
-	public static bool showUi {
-		get { 
-			return BetterResoniteImGuiLib.showUi;
-		}
-
-		set {
-			BetterResoniteImGuiLib.showUi = value;
-		}
-	}
-
 	public static void RegisterUIHandler(Action handler) {
-		BetterResoniteImGuiLib.uiHandler = handler;
+		BetterResoniteImGuiLib.uiHandler += handler;
 	}
 
-	public static void UnRegisterUIHandler() {
-		BetterResoniteImGuiLib.uiHandler = null;
+	public static void UnRegisterUIHandler(Action handler) {
+		BetterResoniteImGuiLib.uiHandler -= handler;
 	}
 
-    public static void ShowUi() {
-        showUi = true;
+    public static void CaptureInput() {
+        BetterResoniteImGuiLib.captureInput = true;
     }
 
-    public static void HideUi() {
-        showUi = false;
+    public static void ReleseInput() {
+        BetterResoniteImGuiLib.captureInput = false;
     }
 }
