@@ -14,6 +14,7 @@
 
 # Examples
 ## Basic Usage
+The following example displays a window with the text "Hello World!". 
 ```cs
 using HarmonyLib;
 using ResoniteModLoader;
@@ -31,21 +32,25 @@ public class ImGuiExample : ResoniteMod {
     const string harmonyId = "com.example.ImGuiExample";
 
     public override void OnEngineInit() {
+        Setup();
+    }
+
+    static void Setup() {
         Harmony harmony = new Harmony(harmonyId);
         harmony.PatchAll();
+        ImGuiLib.RegisterUIHandler(ExampleUI);
+    }
 
-        ImGuiLib.RegisterUIHandler(() => {
-            ImGui.Begin("ImGuiExample");
-
-            ImGui.Text("Hello World!");
-
-            ImGui.End();
-        });
+    static void ExampleUI() {
+        ImGui.Begin("ImGuiExample");
+        ImGui.Text("Hello World!");
+        ImGui.End();
     }
 }
 ```
 
 ## Using HotReloadLib
+This exmple uses the HotReloadLib to unregister the old UI handler and register the new UI handler on hot reload.
 ```cs
 using HarmonyLib;
 using ResoniteModLoader;
@@ -63,19 +68,12 @@ public class ImGuiExample : ResoniteMod {
 
     const string harmonyId = "com.example.ImGuiExample";
     
-    public static Action uiHandler;
-
     public override void OnEngineInit() {
-        Harmony harmony = new Harmony(harmonyId);
-        harmony.PatchAll();
-
         Setup();
     }
 
     static void BeforeHotReload() {
-        ImGuiLib.UnRegisterUIHandler(uiHandler);
-
-        Harmony harmony = new Harmony(harmonyId);
+        ImGuiLib.UnregisterUIHandler(ExampleUI);
         harmony.UnpatchAll(harmonyId);
     }
 
@@ -86,16 +84,13 @@ public class ImGuiExample : ResoniteMod {
     static void Setup() {
         Harmony harmony = new Harmony(harmonyId);
         harmony.PatchAll();
+        ImGuiLib.RegisterUIHandler(ExampleUI);
+    }
 
-        uiHandler = () => {
-            ImGui.Begin("ImGuiExample");
-
-            ImGui.Text("Hello World!");
-
-            ImGui.End();
-        };
-
-        ImGuiLib.RegisterUIHandler(uiHandler);
+    static void ExampleUI() {
+        ImGui.Begin("ImGuiExample");
+        ImGui.Text("Hello World!");
+        ImGui.End();
     }
 }
 ```
@@ -117,7 +112,6 @@ public class ImGuiExample : ResoniteMod {
 
     const string harmonyId = "com.example.ImGuiExample";
     
-    public static Action uiHandler;
     public static bool captureInput = false;
     public static CancellationTokenSource cancellationToken = new CancellationTokenSource();
 
@@ -127,23 +121,25 @@ public class ImGuiExample : ResoniteMod {
         harmony.PatchAll();
 
         Task.Run(() => CheckKeyState(cancellationToken.Token), cancellationToken.Token);
-
         Engine.Current.OnShutdownRequest += (r) => {
             cancellationToken.Cancel();
         };
 
-        uiHandler = () => {
-            // Optionally hide the ui when not focused
-            // if (!captureInput) return;
+        ImGuiLib.RegisterUIHandler(ExampleUI);
+    }
 
-            ImGui.Begin("ImGuiExample");
+    static void Setup() {
+        Harmony harmony = new Harmony(harmonyId);
+        harmony.PatchAll();
+        ImGuiLib.RegisterUIHandler(ExampleUI);
+    }
 
-            ImGui.Text("Hello World!");
-
-            ImGui.End();
-        };
-
-        ImGuiLib.RegisterUIHandler(uiHandler);
+    static void ExampleUI() {
+      // Optionally hide the ui when not focused
+      // if (!captureInput) return;
+      ImGui.Begin("ImGuiExample");
+      ImGui.Text("Hello World!");
+      ImGui.End();
     }
 
     internal static void CheckKeyState(CancellationToken token) {
@@ -169,4 +165,4 @@ public class ImGuiExample : ResoniteMod {
 # Creddits
  - [art0007i](https://github.com/art0007i) - Making [ImGuiUnityInject](https://github.com/art0007i/ImGuiUnityInject/releases/latest/download/ImGuiUnityInject.dll) and the original mod.
  - [NepuShiro](https://github.com/NepuShiro) - Being real and not cake.
- - [Icecubegame](https://github.com/Icecubegame) - Back seat programmer.
+ - [Icecubegame](https://github.com/Icecubegame) ~ "You should use constructors".
