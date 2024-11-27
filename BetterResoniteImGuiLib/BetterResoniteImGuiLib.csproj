@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>       
+        <RootNamespace>BetterResoniteImGuiLib</RootNamespace>
+		<AssemblyName>0BetterResoniteImGuiLib</AssemblyName>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<TargetFramework>net472</TargetFramework>
+		<FileAlignment>512</FileAlignment>
+		<LangVersion>10.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<Deterministic>true</Deterministic>
+
+        <CopyToMods Condition="'$(CopyToMods)'==''">true</CopyToMods>
+		<DebugType Condition="'$(Configuration)'=='Debug'">embedded</DebugType>
+	</PropertyGroup>
+
+    <PropertyGroup Condition="'$(ResonitePath)'==''">
+		<ResonitePath>$(MSBuildThisFileDirectory)Resonite/</ResonitePath>
+		<ResonitePath Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\Resonite\')">C:\Program Files (x86)\Steam\steamapps\common\Resonite\</ResonitePath>
+		<ResonitePath Condition="Exists('$(HOME)/.steam/steam/steamapps/common/Resonite/')">$(HOME)/.steam/steam/steamapps/common/Resonite/</ResonitePath>
+	</PropertyGroup>
+
+    <ItemGroup>
+		<Reference Include="FrooxEngine">
+		    <HintPath>$(ResonitePath)Resonite_Data\Managed\FrooxEngine.dll</HintPath>
+		</Reference>
+		<Reference Include="ResoniteModLoader">
+		    <HintPath>$(ResonitePath)Libraries\ResoniteModLoader.dll</HintPath>
+		</Reference>
+		<Reference Include="HarmonyLib">
+		    <HintPath>$(ResonitePath)rml_libs\0Harmony.dll</HintPath>
+		    <HintPath Condition="Exists('$(ResonitePath)0Harmony.dll')">$(ResonitePath)0Harmony.dll</HintPath>
+		</Reference>
+        <Reference Include="Elements.Core">
+            <HintPath>$(ResonitePath)Resonite_Data\Managed\Elements.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityFrooxEngineRunner">
+			<HintPath>$(ResonitePath)Resonite_Data\Managed\UnityFrooxEngineRunner.dll</HintPath>
+		</Reference>
+		<Reference Include="ImGuiUnityInject">
+			<HintPath>$(ResonitePath)rml_libs\ImGuiUnityInject.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule">
+			<HintPath>$(ResonitePath)Resonite_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+		</Reference>
+		<Reference Include="Unity.InputSystem">
+			<HintPath>$(ResonitePath)Resonite_Data\Managed\Unity.InputSystem.dll</HintPath>
+		</Reference>
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(ResonitePath)Resonite_Data\Managed\Assembly-CSharp.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(CopyToMods)'=='true'">
+		<Message Text="Attempting to copy $(TargetFileName) to $(ResonitePath)rml_mods" Importance="high" />
+		<Copy SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFolder="$(ResonitePath)rml_mods" ContinueOnError="true" />
+	</Target>
+
+</Project>
