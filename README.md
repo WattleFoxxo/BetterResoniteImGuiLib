@@ -44,7 +44,7 @@ public class ImGuiExample : ResoniteMod {
 }
 ```
 
-## Usage With HotReloadLib
+## Using HotReloadLib
 ```cs
 using HarmonyLib;
 using ResoniteModLoader;
