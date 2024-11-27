@@ -88,7 +88,7 @@ public static class ImGuiLib {
 		BetterResoniteImGuiLib.uiHandler += handler;
 	}
 
-	public static void UnRegisterUIHandler(Action handler) {
+	public static void UnregisterUIHandler(Action handler) {
 		BetterResoniteImGuiLib.uiHandler -= handler;
 	}
 
