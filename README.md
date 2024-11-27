@@ -168,3 +168,4 @@ public class ImGuiExample : ResoniteMod {
 # Creddits
  - [art0007i](https://github.com/art0007i) - Making [ImGuiUnityInject](https://github.com/art0007i/ImGuiUnityInject/releases/latest/download/ImGuiUnityInject.dll) and the original mod.
  - [NepuShiro](https://github.com/NepuShiro) - Being real and not cake.
+ - [Icecubegame](https://github.com/Icecubegame) - Back seat programmer.
