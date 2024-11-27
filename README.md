@@ -1,10 +1,10 @@
 # BetterResoniteImGuiLib
  "not cake, its real"
- 
+
  This is a replacement for [ResoniteImGuiLib by art0007i](https://github.com/art0007i/ResoniteImGuiLib) 
 
 # Why?
- I pulled 3 consecutive all nighters trying to get [ResoniteImGuiLib](https://github.com/art0007i/ResoniteImGuiLib) working with[ResoniteHotReloadLib](https://github.com/Nytra/ResoniteHotReloadLib) thats why.
+ I pulled 3 consecutive all nighters trying to get [ResoniteImGuiLib](https://github.com/art0007i/ResoniteImGuiLib) working with [ResoniteHotReloadLib](https://github.com/Nytra/ResoniteHotReloadLib) thats why.
 
 # Installation
  - Make sure you have [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) Installed.
