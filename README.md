@@ -115,17 +115,13 @@ public class ImGuiExample : ResoniteMod {
     public static bool captureInput = false;
     public static CancellationTokenSource cancellationToken = new CancellationTokenSource();
 
-
     public override void OnEngineInit() {
-        Harmony harmony = new Harmony(harmonyId);
-        harmony.PatchAll();
-
         Task.Run(() => CheckKeyState(cancellationToken.Token), cancellationToken.Token);
         Engine.Current.OnShutdownRequest += (r) => {
             cancellationToken.Cancel();
         };
 
-        ImGuiLib.RegisterUIHandler(ExampleUI);
+        Setup();
     }
 
     static void Setup() {
